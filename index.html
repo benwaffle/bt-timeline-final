@@ -3,14 +3,61 @@
 <head>
   <title>governers island</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css" />
+
   <style type="text/css">
     body, html {
       font-family: sans-serif;
     }
+
+    #visualization {
+      border: 2px solid black;
+    }
+
+    .vis-item {
+      border-radius: 6px !important;
+      text-align: center;
+      border: 2px solid black;
+    }
+
+    .vis-item.vis-background {
+      padding-top: 10px;
+    }
+
+    .vis-item.planning {
+      background-color: #fff58b;
+    }
+
+    .vis-item.college, .vis-label:nth-child(3) {
+      background-color: #a7e6ff;
+    }
+
+    .vis-item.closure {
+      background-color: #ff9e9e;
+    }
+
+    .vis-item.center, .vis-label:nth-child(4) {
+      background-color: #d5ddf6;
+    }
+
+    .vis-item.condos, .vis-label:nth-child(5) {
+      background-color: #bcffc0;
+    }
+
+    .vis-item.shopping, .vis-label:nth-child(2) {
+      background-color: #ffd994;
+    }
+
+    .vis-item.assist, .vis-label:nth-child(6) {
+      background-color: #d29bff;
+    }
+
+    h1 {
+      text-align: center;
+    }
   </style>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 <h1>Governers Village Project Timeline</h1>
@@ -24,33 +71,55 @@
       SHOPPING = 2,
       COLLEGE = 3,
       CENTER = 4,
-      CONDOS = 5;
+      CONDOS = 5,
+      ASSIST = 6;
 
   // Create a DataSet (allows two way data-binding)
-  var items = new vis.DataSet([
-    {content: 'Buy land', start: '2016', group: GENERAL},
-    {content: 'Get a Building Permit', start: '2016-6-1', group: GENERAL},
-    {content: 'Hire mainentance staff', start: '2020', group: GENERAL},
+  var x = [
+    {content: 'Planning', start: '2017', end: 'April 1, 2017', type: 'background', className: 'planning'},
+    {content: 'Permit', start: 'April 1, 2017', end: 'July 1, 2017', type: 'background'},
 
-    {content: 'Find companies', start: '2016', group: SHOPPING},
-    {content: 'Build stores', start: '2017', end: '2020', group: SHOPPING},
+    {content: 'Find retailers', start: 'April 1, 2017', end: '2018', group: SHOPPING},
+    {content: 'Build shopping center<br><small>$26M</small>', start: '2018', end: 'October 1, 2020', group: SHOPPING},
 
-    {content: 'Build lecture halls', start: '2018', group: COLLEGE},
+    {content: 'Build Lecture Halls<br /><small>$5M</small>', start: '2018', end: '2019', group: COLLEGE},
+    {content: 'Get funding from NYC', start: '2019', end: '2020', group: COLLEGE},
 
-    {content: 'Build Activities Center', start: '2017', end: '2018', group: CENTER},
-    {content: 'Hire Staff', start: '2020', group: CENTER},
+    {content: 'Build Activities Center<br /><small>$4.45M</small>', start: '2018', end: '2019', group: CENTER},
+    {content: 'Build Pool<br /><small>$0.05M</small>', start: 'April 1, 2019', end: '2020', group: CENTER},
+    {content: 'Hire Staff<br />&nbsp;', start: 'April 1, 2020', end: 'October 1, 2020', group: CENTER},
 
-    {content: 'Knock Down Existing Residential Buildings', start: '2016-6-1', group: CONDOS},
-    {content: 'Build Condos', start: '2017', end: '2019', group: CONDOS},
-    {content: 'Plumbing, Electricity, etc', start: '2019-6-1', group: CONDOS},
-  ]);
+    {content: 'Demolish Buildings<br><small>$2M</small>', start: 'July 1, 2017', end: '2018', group: CONDOS},
+    {content: 'Build Condominiums<br /><small>$40M</small>', start: 'January 1, 2018', end: '2020', group: CONDOS},
+    {content: 'Establish Physical Plant<br /><small>$10M</small>', start: 'January 1, 2020', end: 'October 1, 2020', group: CONDOS},
 
+    {content: 'Build Nursing Residences<br /><small>$1M</small>', start: 'October 1, 2018', end: 'February 1, 2020', group: ASSIST},
+    {content: 'Hire nurses<br />&nbsp', start: 'April 1, 2020', end: 'October 1, 2020', group: ASSIST, className: 'staff'},
+
+    {content: 'Closure', start: 'October 1, 2020', end: '2021', type: 'background', className: 'closure'},
+  ];
+
+  for (var y of x) {
+    if (y.group == SHOPPING)
+      y.className = 'shopping';
+    if (y.group == COLLEGE)
+      y.className = 'college';
+    if (y.group == CONDOS)
+      y.className = 'condos';
+    if (y.group == ASSIST)
+      y.className = 'assist';
+    if (y.group == CENTER)
+      y.className = 'center';
+  }
+
+  var items = new vis.DataSet(x);
   var groups = new vis.DataSet([
-    {id: GENERAL, content: '<br>'}, // general
+    {id: GENERAL, content: '<br><br>'}, // general
     {id: SHOPPING, content: 'Shopping Center'},
     {id: COLLEGE, content: 'Community College'},
-    {id: CENTER, content: 'Activities center'},
-    {id: CONDOS, content: 'Condos'},
+    {id: CENTER, content: 'Activities Center'},
+    {id: CONDOS, content: 'Residential Community'},
+    {id: ASSIST, content: 'Assisted Living'},
   ]);
 
   // Create a Timeline
