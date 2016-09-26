@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>governers island</title>
+
+  <style type="text/css">
+    body, html {
+      font-family: sans-serif;
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1>Governers Village Project Timeline</h1>
+<div id="visualization"></div>
+
+<script type="text/javascript">
+  // DOM element where the Timeline will be attached
+  var container = document.getElementById('visualization');
+
+  var GENERAL = 1,
+      SHOPPING = 2,
+      COLLEGE = 3,
+      CENTER = 4,
+      CONDOS = 5;
+
+  // Create a DataSet (allows two way data-binding)
+  var items = new vis.DataSet([
+    {content: 'Buy land', start: '2016', group: GENERAL},
+    {content: 'Get a Building Permit', start: '2016-6-1', group: GENERAL},
+    {content: 'Hire mainentance staff', start: '2020', group: GENERAL},
+
+    {content: 'Find companies', start: '2016', group: SHOPPING},
+    {content: 'Build stores', start: '2017', end: '2020', group: SHOPPING},
+
+    {content: 'Build lecture halls', start: '2018', group: COLLEGE},
+
+    {content: 'Build Activities Center', start: '2017', end: '2018', group: CENTER},
+    {content: 'Hire Staff', start: '2020', group: CENTER},
+
+    {content: 'Knock Down Existing Residential Buildings', start: '2016-6-1', group: CONDOS},
+    {content: 'Build Condos', start: '2017', end: '2019', group: CONDOS},
+    {content: 'Plumbing, Electricity, etc', start: '2019-6-1', group: CONDOS},
+  ]);
+
+  var groups = new vis.DataSet([
+    {id: GENERAL, content: '<br>'}, // general
+    {id: SHOPPING, content: 'Shopping Center'},
+    {id: COLLEGE, content: 'Community College'},
+    {id: CENTER, content: 'Activities center'},
+    {id: CONDOS, content: 'Condos'},
+  ]);
+
+  // Create a Timeline
+  var timeline = new vis.Timeline(container);
+  timeline.setGroups(groups);
+  timeline.setItems(items);
+  timeline.setOptions({
+    showCurrentTime: false
+  });
+</script>
+</body>
+</html>
