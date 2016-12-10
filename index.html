@@ -30,10 +30,6 @@
       background-color: #fff58b;
     }
 
-    .vis-item.college, .vis-label:nth-child(3) {
-      background-color: #a7e6ff;
-    }
-
     .vis-item.closure {
       background-color: #ff9e9e;
     }
@@ -73,7 +69,6 @@
 
   var GENERAL = 1,
       SHOPPING = 2,
-      COLLEGE = 3,
       CENTER = 4,
       CONDOS = 5,
       ASSIST = 6;
@@ -85,9 +80,6 @@
 
     {content: 'Find retailers', start: 'April 1, 2017', end: '2018', group: SHOPPING},
     {content: 'Build shopping center<br><small>$26M</small>', start: '2018', end: 'October 1, 2020', group: SHOPPING},
-
-    {content: 'Build Lecture Halls<br /><small>$5M</small>', start: '2018', end: '2019', group: COLLEGE},
-    {content: 'Get funding from NYC', start: '2019', end: '2020', group: COLLEGE},
 
     {content: 'Build Activities Center<br /><small>$4.45M</small>', start: '2018', end: '2019', group: CENTER},
     {content: 'Build Pool<br /><small>$0.05M</small>', start: 'April 1, 2019', end: '2020', group: CENTER},
@@ -106,8 +98,6 @@
   for (var y of x) {
     if (y.group == SHOPPING)
       y.className = 'shopping';
-    if (y.group == COLLEGE)
-      y.className = 'college';
     if (y.group == CONDOS)
       y.className = 'condos';
     if (y.group == ASSIST)
@@ -120,7 +110,6 @@
   var groups = new vis.DataSet([
     {id: GENERAL, content: '<br><br>'}, // general
     {id: SHOPPING, content: 'Shopping Center'},
-    {id: COLLEGE, content: 'Community College'},
     {id: CENTER, content: 'Activities Center'},
     {id: CONDOS, content: 'Residential Community'},
     {id: ASSIST, content: 'Assisted Living'},
